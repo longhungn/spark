@@ -116,4 +116,33 @@ public class RouteEntryTest {
                    entry.matches(HttpMethod.get, "/test/this/resource/child/id"));
     }
 
+    @Test
+    public void testMatches_slashWildCardDoesNotMatchesNoTrailingSlash() {
+        RouteEntry entry = new RouteEntry();
+        entry.httpMethod = HttpMethod.get;
+        entry.path = "/test/route/*";
+
+        assertFalse("Should return false",
+            entry.matches(HttpMethod.get, "/test/route"));
+    }
+
+    @Test
+    public void testMatches_slashWildCardMatchesTrailingSlash() {
+        RouteEntry entry = new RouteEntry();
+        entry.httpMethod = HttpMethod.get;
+        entry.path = "/test/route/*";
+
+        assertTrue("Should return true",
+            entry.matches(HttpMethod.get, "/test/route/"));
+    }
+
+    @Test
+    public void testMatches_trailingSlashDoesNotMatchNoTrailingSlash() {
+        RouteEntry entry = new RouteEntry();
+        entry.httpMethod = HttpMethod.get;
+        entry.path = "/test/route/";
+
+        assertFalse("Should return false",
+            entry.matches(HttpMethod.get, "/test/route"));
+    }
 }
